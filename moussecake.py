@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2009-2017 BHG http://bw.org/
+# Copyright 2018 Lulu Wang
 
 #6 inch cake ingredients
 size_original = 6
