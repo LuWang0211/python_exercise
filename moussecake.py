@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # Copyright 2018 Lulu Wang
 
+import math
 #6 inch cake ingredients
 size_original = 6
 
@@ -26,7 +27,26 @@ auth = False
 count = 0
 max_attempt = 3  # times can try 
 
-while size_request not in size:
+def myround(n, d = 0): 
+    a = n * (10 ** (d + 1))
+    a = math.floor(a)
+    a = a / 10
+    b = math.floor(a)
+    difference = a - b
+    
+    if ( difference < 0.5):
+        result = b
+    else:
+        result = b + 1
+        
+    result = result / (10 ** d)
+    
+    if (d == 0) :
+        result = int(result)
+    
+    return result
+
+while (size_request not in size):
     count +=1
     if count > max_attempt: 
         print('You entered more than 3 times and you cannot try more')
@@ -38,21 +58,21 @@ else:
     ingredient_multiple = int(size_now) ** 2 / size_original **2
     ingredient_multiple = float(ingredient_multiple)
 
-    Cake_eggs_now = round(Cake_eggs * ingredient_multiple,2)
-    Cake_oil_now = round(Cake_oil * ingredient_multiple,2)
-    Cake_suger_now = round(Cake_suger * ingredient_multiple,2)
-    Cake_matcha_now = round(Cake_matcha * ingredient_multiple,2)
-    Cake_salt_now = round(Cake_salt * ingredient_multiple,2)
-    Cake_milk_now = round(Cake_milk * ingredient_multiple,2)
-    Cake_flour_now = round(Cake_flour * ingredient_multiple,2)
+    Cake_eggs_now = myround(Cake_eggs * ingredient_multiple,2)
+    Cake_oil_now = myround(Cake_oil * ingredient_multiple,2)
+    Cake_suger_now = myround(Cake_suger * ingredient_multiple,2)
+    Cake_matcha_now = myround(Cake_matcha * ingredient_multiple,2)
+    Cake_salt_now = myround(Cake_salt * ingredient_multiple,2)
+    Cake_milk_now = myround(Cake_milk * ingredient_multiple,2)
+    Cake_flour_now = myround(Cake_flour * ingredient_multiple,2)
 
 
-    Mouse_gelatine_now =  round(Mouse_gelatine * ingredient_multiple,2)
-    Mouse_matcha_now =  round(Mouse_matcha * ingredient_multiple,2)
-    Mouse_milk_now =  round(Mouse_milk * ingredient_multiple,2)
-    Mouse_sugar_now = round(Mouse_sugar * ingredient_multiple,2)
-    Mouse_cream_now = round(Mouse_cream * ingredient_multiple,2)
-    Mouse_cheese_now = round(Mouse_cheese * ingredient_multiple,2)
+    Mouse_gelatine_now =  myround(Mouse_gelatine * ingredient_multiple,2)
+    Mouse_matcha_now =  myround(Mouse_matcha * ingredient_multiple,2)
+    Mouse_milk_now =  myround(Mouse_milk * ingredient_multiple,2)
+    Mouse_sugar_now = myround(Mouse_sugar * ingredient_multiple,2)
+    Mouse_cream_now = myround(Mouse_cream * ingredient_multiple,2)
+    Mouse_cheese_now = myround(Mouse_cheese * ingredient_multiple,2)
 
     print(f'Matcha Mousse Cake Ingredients( {size_now} inch) are as follow:')
     print(f'Part 1 (Chiffon Cake ): {Cake_eggs_now} eggs, {Cake_oil_now}g vegetable oil, {Cake_suger_now}g sugar, {Cake_matcha_now} tbsp matcha powder, {Cake_salt_now} pinch of salt, {Cake_milk_now}g milk, {Cake_flour_now}g cake flour')
