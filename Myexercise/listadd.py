@@ -21,8 +21,6 @@ addl  = list()
 addlr = list()
 maxl  = list()
 minl  = list()
-key   = list()
-keyr  = list()
 
 a_length = len(a)
 b_length = len(b)
@@ -37,63 +35,54 @@ else:
     maxl = b
     minl = a 
 
-for i, j, k in zip(range(lenmax-1,-1,-1), range(lenmin-1,-1,-1), range(lenmin)):
-    maxl_value = maxl[i]
-    minl_value = minl[j]
+def addBit(bit1, bit2):
+    if  bit1 == 1 and bit2 == 1:
+        carry = 1
+        new_value = 0
+    else:
+        carry = 0
+        new_value = bit1 ^ bit2
 
-    if i == lenmax-1:
-        if  maxl_value & minl_value == 1:
-            temp = 1
-            x_value = 0
-        else:
-            temp = 0
-            x_value = maxl_value ^ minl_value
-        key.append(temp)
-    else:  
-        if key[k-1] == 1:
-            if maxl_value == 0 and minl_value == 0:
-                temp = 0
-                x_value = 1
-            elif maxl_value == 1 and minl_value == 1:
-                temp = 1
-                x_value = 1
-            else:
-                temp = 1
-                x_value = 0
-        else:
-            if maxl_value == 1 and minl_value == 1:
-                temp = 1
-                x_value = 0
-            else:
-                temp = 0
-                x_value = maxl_value ^ minl_value
-        key.append(temp)
+    return [new_value, carry]
+
+def addBitWithCarry(bit1, bit2, input_carry):
+    new_value, carry = addBit(bit1, bit2)
+
+    if input_carry == 0:
+        return [new_value, carry]
+
+    after_carry_new_value, after_carry_new_carry = addBit(new_value, 1)
+
+    if carry == 1 or after_carry_new_carry == 1:
+        final_carry = 1
+    else:
+        final_carry = 0
+
+    return [after_carry_new_value, final_carry]
+
+carry = 0
+
+for p in range(lenmin):
+
+    maxl_value = maxl[lenmax - 1 - p]
+    minl_value = minl[lenmin - 1 - p]
+
+    x_value, carry = addBitWithCarry(maxl_value, minl_value, carry)
 
     addlr.append(x_value)
 #    print(f'maxl,minl,addlr = {i,j,k}:{maxl[i],minl[j],addlr[k]}: "(key  = {key[k]})" addlr = {addlr}')
 
 for i in range(lengap-1,-1,-1):
     maxl_value = maxl[i]
-    key_length = len(key)
-    if key[key_length-1] == 1:
-        if maxl_value == 1:
-            temp = 1
-            x_value = 0
-            if i == 0:
-                addlr.append(x_value)
-                addlr.append(1)
-            else:
-                addlr.append(x_value)
-        else:
-            temp = 0
-            x_value = 1
-            addlr.append(x_value)        
-    else:
-        temp = 0
-        x_value = maxl_value
-        addlr.append(x_value)
-    key.append(temp)
 
+    x_value, temp = addBit(maxl_value, carry)
+    addlr.append(x_value)
+
+    if carry == 1:      
+        if maxl_value == 1 and i == 0:
+            addlr.append(1)
+
+    carry = temp
 
 
 print(f'maxlist = {maxl}')
@@ -105,9 +94,6 @@ for i in range(lengap):
 
 print(f'minlist = {space}{minl}')
 
-for i in reversed(key):
-    keyr.append(i)
-print(f'keyr    = {keyr}')
 
 for i in reversed(addlr):
     addl.append(i)
